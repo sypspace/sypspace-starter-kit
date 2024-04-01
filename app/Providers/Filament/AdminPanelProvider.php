@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\MyProfilePage;
 use App\Livewire\PersonalInfoComponent;
 use App\Livewire\TwoFactorAuthenticationComponent;
 use App\Livewire\UpdatePasswordComponent;
@@ -21,6 +22,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 
@@ -95,6 +97,7 @@ class AdminPanelProvider extends PanelProvider
                         hasAvatars: true,
                         slug: 'my-profile'
                     )
+                    ->customMyProfilePage(MyProfilePage::class)
                     ->myProfileComponents([
                         'personal_info' => PersonalInfoComponent::class,
                         'update_password' => UpdatePasswordComponent::class,
