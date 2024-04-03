@@ -31,20 +31,6 @@ class Profile extends Model
         'updated_at',
     ];
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * The storage format of the model's date columns.
-     *
-     * @var string
-     */
-    protected $dateFormat = 'U';
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
