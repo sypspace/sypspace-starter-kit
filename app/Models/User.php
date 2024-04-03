@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -77,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar, HasNam
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return ! is_null($this->profile) ? asset('storage/' . $this->profile->avatar_url) : null;
+        return $this->profile->avatar_url ? Storage::url($this->profile->avatar_url) : null;
     }
 
     public function getFilamentName(): string
