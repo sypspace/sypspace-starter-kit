@@ -1,11 +1,12 @@
 services:
-    sypspace-app.test:
+    app-service:
         build:
             context: ./vendor/laravel/sail/runtimes/8.3
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
         image: sail-8.3/app
+        container_name: app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -20,14 +21,15 @@ services:
         volumes:
             - '.:/var/www/html'
         networks:
-            - sail
+            - space-network
         depends_on:
-            - mysql
-            - redis
-    mysql:
+            - mysql-service
+            - redis-service
+    mysql-service:
         image: 'mysql/mysql-server:8.0'
+        container_name: mysql
         ports:
-            - '${FORWARD_DB_PORT:-3306}:3306'
+            - '${FORWARD_DB_PORT:-3307}:3306'
         environment:
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ROOT_HOST: '%'
@@ -36,10 +38,10 @@ services:
             MYSQL_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
-            - 'sail-mysql:/var/lib/mysql'
+            - 'space-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
-            - sail
+            - space-network
         healthcheck:
             test:
                 - CMD
@@ -48,14 +50,15 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
-    redis:
+    redis-service:
         image: 'redis:alpine'
+        container_name: redis
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
-            - 'sail-redis:/data'
+            - 'space-redis:/data'
         networks:
-            - sail
+            - space-network
         healthcheck:
             test:
                 - CMD
@@ -64,10 +67,10 @@ services:
             retries: 3
             timeout: 5s
 networks:
-    sail:
+    space-network:
         driver: bridge
 volumes:
-    sail-mysql:
+    space-mysql:
         driver: local
-    sail-redis:
+    space-redis:
         driver: local
