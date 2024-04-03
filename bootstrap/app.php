@@ -16,8 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->reportable(function (Throwable $e) {
-            if ($this->shouldReport($e)) {
-                FilamentExceptions::report($e);
-            }
+            FilamentExceptions::report($e);
         });
     })->create();
