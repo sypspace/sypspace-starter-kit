@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Backups;
 use App\Filament\Pages\MyProfilePage;
 use App\Livewire\PersonalInfoComponent;
 use App\Livewire\TwoFactorAuthenticationComponent;
@@ -25,6 +26,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -44,6 +46,10 @@ class AdminPanelProvider extends PanelProvider
                     ]
                 )
             )
+            ->navigationGroups([
+                'User Management',
+                'Settings',
+            ])
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -103,6 +109,8 @@ class AdminPanelProvider extends PanelProvider
                         'update_password' => UpdatePasswordComponent::class,
                         'two_factor_authentication' => TwoFactorAuthenticationComponent::class,
                     ]),
+                    FilamentSpatieLaravelBackupPlugin::make()
+                        ->usingPage(Backups::class),
             ]);
     }
 }

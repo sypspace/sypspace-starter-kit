@@ -1,6 +1,7 @@
 <?php
 
 use BezhanSalleh\FilamentExceptions\FilamentExceptions;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,4 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->reportable(function (Throwable $e) {
             FilamentExceptions::report($e);
         });
-    })->create();
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        $schedule->command('backup:clean')->daily()->at('00:00');
+        $schedule->command('backup:run')->weekly()->at('01:00');
+    })
+    ->create();
