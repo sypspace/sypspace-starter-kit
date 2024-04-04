@@ -9,4 +9,6 @@ use ShuvroRoy\FilamentSpatieLaravelBackup\Pages\Backups as PagesBackups;
 class Backups extends PagesBackups
 {
     use HasPageShield;
+
+    protected static ?string $navigationIcon = 'heroicon-m-server-stack';
 }
