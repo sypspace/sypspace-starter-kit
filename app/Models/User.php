@@ -78,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar, HasNam
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->profile->avatar_url ? Storage::url($this->profile->avatar_url) : null;
+        return $this->profile && $this->profile->avatar_url ? Storage::url($this->profile->avatar_url) : null;
     }
 
     public function getFilamentName(): string
@@ -91,7 +91,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar, HasNam
         return $this->email_verified_at ? true : false;
     }
 
-    public function getIsSuperAdminAttribute() : bool {
+    public function getIsSuperAdminAttribute(): bool
+    {
         // return in_array('super_admin', $this->roles->pluck('name')->toArray());
         // return $this->roles()->where('name', 'super_admin')->count();
         return $this->hasRole(config('filament-shield.super_admin.name'));
@@ -114,5 +115,5 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar, HasNam
     //         ->fit(Fit::Contain, 300, 300)
     //         ->nonQueued();
     // }
-    
+
 }
