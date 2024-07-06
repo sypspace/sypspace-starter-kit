@@ -65,6 +65,7 @@ return [
 
         'pages' => [
             'Dashboard',
+            'MyProfilePage',
         ],
 
         'widgets' => [
